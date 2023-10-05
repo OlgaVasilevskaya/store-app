@@ -30,11 +30,15 @@ const Login = () => {
         />
 
         <SubmitButton text={'Login'} />
-        <button className="btn btn-primary btn-block">Guest user</button>
+        <button 
+          className="btn btn-primary btn-block"
+        >
+          Guest user
+        </button>
 
         <p className="text-center">
           Not a member yet? 
-          <a onClick={handleGoToRegister} className="ml-2 link-secondary">Register</a> 
+          <button onClick={handleGoToRegister} className="ml-2 link-secondary">Register</button> 
         </p>
       </Form>
     </section>
