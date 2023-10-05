@@ -23,12 +23,12 @@ const Register = () => {
 
         <p className="text-center">
           Already a member? 
-          <a 
+          <button
             onClick={handleGoToLogin}
             className="ml-2 link-secondary"
           >
             Login
-          </a>
+          </button>
         </p>
       </Form>
     </section>
