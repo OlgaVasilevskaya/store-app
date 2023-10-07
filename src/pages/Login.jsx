@@ -31,14 +31,14 @@ const Login = () => {
 
         <SubmitButton text={'Login'} />
         <button 
-          className="btn btn-primary btn-block"
+          className="btn btn-secondary btn-block"
         >
           Guest user
         </button>
 
         <p className="text-center">
           Not a member yet? 
-          <button onClick={handleGoToRegister} className="ml-2 link-secondary">Register</button> 
+          <button onClick={handleGoToRegister} className="ml-2 link-primary">Register</button> 
         </p>
       </Form>
     </section>
