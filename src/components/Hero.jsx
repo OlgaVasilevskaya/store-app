@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import SubmitButton from "./SubmitButton";
 
 import hero1 from '../assets/hero1.webp';
 import hero2 from '../assets/hero2.webp';
