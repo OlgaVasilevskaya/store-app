@@ -3,5 +3,6 @@
 Technologies:
 - React
 - VITE
+- Redux
 - Tailwind CSS
 - DaisyUI
