@@ -1,4 +1,4 @@
-# comfy-app
+# craft-app
 
 Technologies:
 - React
