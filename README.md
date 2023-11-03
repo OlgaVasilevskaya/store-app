@@ -1,4 +1,4 @@
-# craft-app
+# store-app
 
 Technologies:
 - React
