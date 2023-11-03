@@ -1,4 +1,5 @@
 import { Form, useNavigate } from "react-router-dom";
+
 import { FormInput, SubmitButton } from '../components/index';
 
 const Register = () => {
