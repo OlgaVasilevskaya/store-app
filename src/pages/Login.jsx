@@ -1,49 +1,83 @@
-import { Form, useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { Form, Link, redirect, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { FormInput, SubmitButton } from "../components";
+import { FormInput, SubmitButton } from '../components';
+
+import { loginUser } from '../store/userSlice';
+
+import { customFetch } from '../utils';
+
+export const action =
+  (store) =>
+  async ({ request }) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+
+    try {
+      const response = await customFetch.post('/auth/local', data);
+      store.dispatch(loginUser(response.data));
+      toast.success('logged in successfully');
+      return redirect('/');
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.error?.message ||
+        'please double check your credentials';
+      toast.error(errorMessage);
+      return null;
+    }
+  };
 
 const Login = () => {
-  const navigation = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleGoToRegister = () => {
-    navigation('/register');
+  const loginAsGuestUser = async () => {
+    try {
+      const response = await customFetch.post('/auth/local', {
+        identifier: 'test@test.com',
+        password: 'secret',
+      });
+      dispatch(loginUser(response.data));
+      toast.success('welcome guest user');
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+      toast.error('guest user login error. please try again');
+    }
   };
 
   return (
-    <section className="grid min-h-[100vh] place-items-center px-8">
-      <Form 
-        method='post' 
-        className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
+    <section className='h-screen grid place-items-center'>
+      <Form
+        method='post'
+        className='card w-96  p-8 bg-base-100 shadow-lg flex flex-col gap-y-4'
       >
-        <h2 className="text-center text-3xl font-bold">Login</h2>
-
-        <FormInput 
-          type='text'
-          placeholder='Email'
-          label='Email'
-          defaultValue='test@test.com'
-        />
-        <FormInput 
-          type='password'
-          placeholder='Password'
-          label='Password'
-          defaultValue='secret'
-        />
-
-        <SubmitButton text={'Login'} />
-        <button 
-          className="btn btn-secondary btn-block"
+        <h4 className='text-center text-3xl font-bold'>Login</h4>
+        <FormInput type='email' label='email' name='identifier' />
+        <FormInput type='password' label='password' name='password' />
+        <div className='mt-4'>
+          <SubmitButton text='login' />
+        </div>
+        <button
+          type='button'
+          className='btn btn-secondary btn-block'
+          onClick={loginAsGuestUser}
         >
-          Guest user
+          guest user
         </button>
-
-        <p className="text-center">
-          Not a member yet? 
-          <button onClick={handleGoToRegister} className="ml-2 link-primary">Register</button> 
+        <p className='text-center'>
+          Not a member yet?{' '}
+          <Link
+            to='/register'
+            className='ml-2 link link-hover link-primary capitalize'
+          >
+            register
+          </Link>
         </p>
       </Form>
     </section>
-  )
-}
+  );
+};
 
 export default Login;

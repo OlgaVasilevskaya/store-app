@@ -18,8 +18,6 @@ const SingleProduct = () => {
 
   const { product } = useLoaderData();
 
-  console.log(product)
-
   const { 
     image,
     title,
