@@ -1,39 +1,53 @@
-import { Form, useNavigate } from "react-router-dom";
+import { Form, Link, redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { FormInput, SubmitButton } from '../components/index';
+import { FormInput, SubmitButton } from '../components';
+
+import { customFetch } from '../utils';
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  try {
+    const response = await customFetch.post('/auth/local/register', data);
+    toast.success('account created successfully');
+    return redirect('/login');
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.error?.message ||
+      'please double check your credentials';
+    toast.error(errorMessage);
+    return null;
+  }
+};
 
 const Register = () => {
-  const navigation = useNavigate();
-
-  const handleGoToLogin = () => {
-    navigation('/login');
-  };
-
   return (
-    <section className="grid min-h-[100vh] place-items-center px-8">
+    <section className='h-screen grid place-items-center'>
       <Form
-        method='POST' 
-        className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
+        method='POST'
+        className='card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4'
       >
-        <h3 className="text-center text-3xl font-bold">Register</h3>
-        <FormInput typy='text' label='Username' />
-        <FormInput typy='text' label='Email' />
-        <FormInput typy='password' label='Password' />
-
-        <SubmitButton text='Register' />
-
-        <p className="text-center">
-          Already a member? 
-          <button
-            onClick={handleGoToLogin}
-            className="ml-2 link-secondary"
+        <h4 className='text-center text-3xl font-bold'>Register</h4>
+        <FormInput type='text' label='username' name='username' />
+        <FormInput type='email' label='email' name='email' />
+        <FormInput type='password' label='password' name='password' />
+        <div className='mt-4'>
+          <SubmitButton text='register' />
+        </div>
+        <p className='text-center'>
+          Already a member?
+          <Link
+            to='/login'
+            className='ml-2 link link-hover link-primary capitalize'
           >
-            Login
-          </button>
+            login
+          </Link>
         </p>
       </Form>
     </section>
-  )
-}
+  );
+};
 
 export default Register;
